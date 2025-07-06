@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PINAKSAGENT 2.0</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #fff; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+        input, button { padding: 10px; margin: 10px; width: 300px; border-radius: 5px; border: none; }
+        input { background: #222; color: white; }
+        button { background: #00ffae; color: black; font-weight: bold; cursor: pointer; }
+        #output { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🎬 PINAKSAGENT 2.0</h1>
+    <input type="text" id="prompt" placeholder="Enter your reel prompt..." />
+    <button onclick="generate()">Generate Reel</button>
+    <div id="output"></div>
+
+    <script>
+        async function generate() {
+            const prompt = document.getElementById("prompt").value;
+            const output = document.getElementById("output");
+            output.innerHTML = "⏳ Generating reel...";
+            const res = await fetch("/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt })
+            });
+            const data = await res.json();
+            output.innerHTML = `<p>✅ Reel ready: <a href="${data.video_url}" target="_blank">${data.video_url}</a></p>`;
+        }
+    </script>
+</body>
+</html>
